@@ -29,7 +29,7 @@
                 <a href="https://whu-lyh.github.io/" target="_blank">Yuhao Li</a><sup>1</sup>,
                 <a href="https://kafeiyin00.github.io/" target="_blank">Jianping Li</a><sup>2&dagger;</sup>,
                 <a href="https://dongzhenwhu.github.io/" target="_blank">Zhen Dong</a><sup>1&dagger;</sup>,
-                <a target="_blank">Yuan Wang</a><sup>3</sup>,
+                <a href="https://scholar.google.com/citations?user=yvQpME4AAAAJ&hl=zh-CN" target="_blank">Yuan Wang</a><sup>3</sup>,
                 <a href="https://3s.whu.edu.cn/ybs/index.htm" target="_blank">Bisheng Yang</a><sup>1</sup></h6>
             <p>
                 <sup>1</sup>State Key Laboratory of Information Engineering in Surveying, Mapping and Remote Sensing, Wuhan University &nbsp;&nbsp;
@@ -60,12 +60,12 @@
   <section class="Task teaser">
     <div class="container is-max-desktop">
       <div class="teaser-body">
-        <div align=center>
-          <img src="video/task_teaser.png" width="60%" height="60%">
-        </div>
         <p class="text-center">
-          SaliencyI2PLoc aims to locate a image's position at a given reference point cloud map.
+          <strong>SaliencyI2PLoc</strong> aims to locate a image's position at a given reference point cloud map.
         </p>
+        <div align=center>
+          <img src="video/task_teaser.png" width="80%" height="80%">
+        </div>
       </div>
     </div>
   </section>
@@ -80,10 +80,10 @@
             <hr style="margin-top:0px">
 
           <p class="text-justify">
-            Image to point cloud global localization plays a vital role for robot navigation in GNSS-denied environments and becomes increasingly necessary for multi-robot map fusion and urban assets management. The modality gap between image and point cloud poses challenges to cross-modality fusion. Current cross-modality global localization solutions either require modality unifying which causes information loss, or rely on engineered training schemes to encode multi-modality features which lack feature alignment and relation consistency. To address these limitations, we propose, SaliencyI2PLoc, a novel contrastive learning based architecture that fuses the saliency map into feature aggregation and maintains the feature relation consistency on multi-manifold spaces. To alleviate the pre-process of data mining, the contrastive learning framework is applied which efficiently achieves cross-modality feature mapping. The context saliency-guided local feature aggregation module is designed, which fully leverages the contribution of the stationary information in the scene generating a more representative global feature. To enhance the cross-modality feature alignment during contrastive learning, the consistency of relative relationships between samples in different manifold spaces is also taken into account. Experiments on urban and highway scenarios datasets demonstrate the effectiveness and robustness of this method. Our method achieves a Recall@1 of 78.92\% and a Recall@1\% of 97.59\% on the urban scenario evaluation dataset, showing an improvement of approximately 33.11\% and 22\%, compared to the baseline method. Our architecture achieves the efficient fusion of image and point cloud and takes a step forward to cross-modality global localization. The code will be released at: https://whu-lyh.github.io/SaliencyI2PLoc.git
+            Image to point cloud global localization is crucial for robot navigation in GNSS-denied environments and has become increasingly important for multi-robot map fusion and urban asset management. The modality gap between images and point clouds poses significant challenges for cross-modality fusion. Current cross-modality global localization solutions either require modality unification, which leads to information loss, or rely on engineered training schemes to encode multi-modality features, which often lack feature alignment and relation consistency. To address these limitations, we propose, <strong>SaliencyI2PLoc</strong>, a novel contrastive learning based architecture that fuses the saliency map into feature aggregation and maintains the feature relation consistency on multi-manifold spaces. To alleviate the pre-process of data mining, the contrastive learning framework is applied which efficiently achieves cross-modality feature mapping. The context saliency-guided local feature aggregation module is designed, which fully leverages the contribution of the stationary information in the scene generating a more representative global feature. Furthermore, to enhance the cross-modality feature alignment during contrastive learning, the consistency of relative relationships between samples in different manifold spaces is also taken into account. Experiments conducted on urban and highway scenario datasets demonstrate the effectiveness and robustness of our method. Specifically, our method achieves a Recall@1 of 78.92\% and a Recall@1\% of 97.59\% on the urban scenario evaluation dataset, showing an improvement of approximately 33.11\% and 22\%, compared to the baseline method. This demonstrates that our architecture efficiently fuses images and point clouds and represents a significant step forward in cross-modality global localization.
           </p>
         <div align=center>
-          <img src="video/methodology-multi-manifold-loss.png" width="80%" height="80%">
+          <img src="video/methodology-multi-manifold-loss.png" width="100%" height="100%">
         </div>
         <p class="text-center">
           The pipeline of our methodology.
@@ -128,10 +128,10 @@
     <div class="container">
       <div class="row">
         <div class="col-12 text-center">
-            <h2>Cluster assignments</h2>
+            <h2>Cluster assignments at urban scenario datasets</h2>
             <hr style="margin-top:0px">
             <div align=center>
-              <img src="video/cluster_assignments_urban.png" width="80%" height="80%">
+              <img src="video/cluster_assignment_urban.png" width="80%" height="80%">
             </div>
             <p class="text-justify">
                 The VLAD cluster assignment of the query images and the Top-1 point cloud from the database. The auxiliary point clouds/images are listed for better visualization. The referenced and Top-1 point clouds are rendered by the relative height, and whole point clouds are viewed from the bird eye view. The same color of patches in the cluster assignment subplots indicates the same cluster assigned.
@@ -142,7 +142,6 @@
   </section>
   <br>
 
-  
   <section>
     <div class="container">
       <div class="row">
@@ -188,12 +187,12 @@
           <h3>Citation</h3>
           <hr style="margin-top:0px">
               <pre style="background-color: #e9eeef;padding: 1.25em 1.5em">
-<code>@article{li2024saliencyi2ploc,
-  title={SaliencyI2PLoc: saliency-guided image-point cloud localization using contrastive learning},
-  author={Yuhao Li, Jianping Li, Zhen Dong, Yuan Wang and Bisheng Yang},
-  journal={Underreview},
-  year={2024}
-}</code>
+                <code>@article{li2024saliencyi2ploc,
+                  title={SaliencyI2PLoc: saliency-guided image-point cloud localization using contrastive learning},
+                  author={Yuhao Li, Jianping Li, Zhen Dong, Yuan Wang and Bisheng Yang},
+                  journal={Underreview},
+                  year={2024}
+                }</code>
               </pre>
           <hr>
       </div>
