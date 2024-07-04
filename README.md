@@ -1,16 +1,29 @@
-# SaliencyI2PLoc
+## SaliencyI2PLoc
 
-This is the repository that contains source code for the [SaliencyI2PLoc](https://whu-lyh.github.io/SaliencyI2PLoc).
+### Installation
 
-If you find Nerfies useful for your work please cite:
+```bash
+cd scripts
+sh install.sh
 ```
-@article{li2024saliencyi2ploc,
-  title={SaliencyI2PLoc: saliency-guided image-point cloud localization using contrastive learning},
-  author={Yuhao Li, Jianping Li, Zhen Dong, Yuan Wang and Bisheng Yang},
-  journal={Underreview},
-  year={2024}
-}
+> You may required to change the coding manner of sh files using `sed -i "s/\r//" *.sh` to avoid the file unrecognition.
+
++ both pytorch1.13.1-cuda11.6 and pytorch2.1.2-cuda12.1 works
+
+
+### Train
+
+```bash
+cd scripts
+sh train.sh # single machine
+#sh train_dist.sh # DDP mode
 ```
 
-# Website License
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+The configuration information will be loaded all in once from the CrossModalityRetrieval.yaml file, including the optimizer, scheduler, dataset, model and other information.
+
+### Test
+
+```bash
+cd scripts
+sh test.sh
+```
