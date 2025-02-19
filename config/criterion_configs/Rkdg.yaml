@@ -1,0 +1,19 @@
+NAME: RKDG
+# dont change by default
+loss_type: 'MSE'
+logit_norm_fn: 'l2'
+logit_mapping_fn: 'identity'
+curvature: 0.1 # by default from hpy_metric
+
+# cross agent distillation
+crosslogitdistloss_weight_st2ss: '0.0' # 0 for discarding st2ss
+crosslogitdistloss_weight_tt2st: '0.0' # 0 for discarding tt2st
+crosslogitsimloss_weight_st2ss: '0.0' # 0 for discarding st2ss
+crosslogitsimloss_weight_tt2st: '0.0' # 0 for discarding tt2st
+crosslogitgeodistloss_weight_st2ss: '0.0' # 0 for discarding st2ss
+crosslogitgeodistloss_weight_tt2st: '0.0' # 0 for discarding tt2st
+# cross modality distallation
+rkdgloss_weight: 2 # 0 for discarding the rkdg from ss to tt
+distance_weight: 0 # 0 for discarding Euclidean distance
+angle_weight: 1 # 0 for discarding cosine distance
+geodesic_weight: 0 # 0 for discarding hyperbolic distance

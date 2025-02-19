@@ -1,0 +1,80 @@
+# batch_size
+total_bs: 2 # batch size is larger
+# warmup start epoch
+start_epoch: 0
+# maximum epoch
+max_epoch: &max_epoch 80
+# the epoch number to early stop
+patience: 10
+# accumulation gradient iterations
+accum_steps: 64
+
+# optimizer parameters
+optimizer : {
+  lr_2d: 0.005,
+  lr_3d: 0.0001,
+  lr_agg: 0.001,
+  type: SGD,
+  kwargs: {
+    lr : 0.005, # lr except the 2d 3d and aggregator layers optional
+    momentum: 0.999, # used by SGD with nesterov
+    dampening: 0.8, # used by SGD with nesterov
+    weight_decay : 0.001
+}}
+
+# scheduler
+scheduler: {
+  type: StepLR,
+  total_epochs: *max_epoch, # for GradualWarmupScheduler
+  kwargs: {
+    step_size: 5, # decay step, step is the epoch number
+    gamma : 0.5, # decay rate
+}}
+
+# dataset setting
+dataset: {
+  train: { _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/dataset_configs/KITTI360.yaml, 
+    others: {subset: 'train'}
+  },
+  val: { _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/dataset_configs/KITTI360.yaml, 
+    others: {subset: 'val'}
+  },
+  test: { _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/dataset_configs/KITTI360.yaml, 
+    others: {subset: 'test'}
+  }
+}
+
+# model parameters
+model: {
+  NAME: CrossI2P,
+  baseline: True,
+  proxy: False, # if to use point cloud proxy
+  mode: "vanilla",
+  global_feat_dim: 256,
+  use_feat_interactor: False, # if have a interactor between different modality
+  do_patch_weight: False, # if to assign attention to token before aggregation
+  discard_cls_token: False, # if to discard before aggregation
+  image_encoder: {
+    _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/model_configs/SphereNetVLAD.yaml
+  },
+  pc_encoder: {
+    _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/model_configs/PointNetVLAD.yaml
+  },
+  aggregator: {
+    image_aggregator: {
+      NAME: none, # gem, netvlad, SMD, or none
+      _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/model_configs/aggregator/SMD_2D.yaml # useless on baseline
+    },
+    pc_aggregator: {
+      NAME: none, # gem, netvlad, SMD, or none
+      _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/model_configs/aggregator/SMD_3D.yaml # useless on baseline
+    }},
+  # for momentum models
+  momentum: 0.995,
+  queue_size: 15000, #65536
+  loss_type: {
+    triplet: True,  
+    ntxent: False, 
+    rkdg: False,
+  },
+}

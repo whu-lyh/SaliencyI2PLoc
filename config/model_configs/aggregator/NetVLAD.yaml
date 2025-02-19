@@ -1,0 +1,6 @@
+NAME: ResNetEncoder
+encoder_type: 'resnet18' # sphere_resnet34
+embed_dim: 512 # fixed for resnet18 or 34 also for sphere_resnet18 or 34
+global_feat_dim: 256 # same with various modality global feature
+num_clusters: 64 # the number of cluster for netvlad layer
+from_pretrained: True

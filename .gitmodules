@@ -1,0 +1,6 @@
+[submodule "pykitti"]
+	path = pykitti
+	url = https://github.com/utiasSTARS/pykitti.git
+[submodule "submodules/pykitti"]
+	path = submodules/pykitti
+	url = https://github.com/utiasSTARS/pykitti.git

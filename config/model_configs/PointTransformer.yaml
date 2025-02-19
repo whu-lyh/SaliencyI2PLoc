@@ -1,0 +1,13 @@
+NAME: PointTransformerEncoder
+tokenizer_type: PointNet #PointNet, Kpconv
+group_size: 32 # local knn for patchify
+num_group: 3072 # the fps sampled center points = patch number
+encoder_emb_dim: 1024 # the dimension of patch tokenizer embeddings
+embed_dim: 384 # the dimension of token feature from transfomer blocks
+depth: 12 # the depth of transformer blocks #6 for refactor mode
+drop_path_rate: 0.0 # dpr for avoiding overfit
+num_heads: 3 # the head of attention
+num_classes: 0 # dimension for classification token, 1000 by default
+global_pool: token # "avg, token" the manner of global feature, other using the class_token
+class_token: True # opposite to global_pool, if false the global_pool should be avg
+fc_norm: True # norm layer for classifier Head fc layer

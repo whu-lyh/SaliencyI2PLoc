@@ -1,0 +1,7 @@
+NAME: NetVLADLoupe
+feature_size: 384 # token feature dimension
+output_dim: 256
+num_clusters: 64
+gating: True # by default for all models
+add_batch_norm: True
+work_with_tokens: True # True for transformer tokens

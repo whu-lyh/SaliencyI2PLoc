@@ -1,0 +1,85 @@
+# batch_size
+total_bs: 4 # 20 for proxy, 10 for points contrast mode, 2 for ptrans 4096
+# warmup start epoch
+start_epoch: 0
+# maximum epoch
+max_epoch: &max_epoch 100 # 300 for full size dataset
+# the epoch number to early stop
+patience: &patience 10
+# accumulation gradient iterations
+accum_steps: 64
+
+# *optimizer
+optimizer: {
+  lr_2d: 0.0001,
+  lr_3d: 0.00001,
+  lr_agg: 0.0005, # 0.001
+  type: SGD,
+  kwargs: {
+    lr : 0.000001, # lr except the 2d 3d and aggregator layers optional
+    momentum: 0.999, # used by SGD with nesterov
+    # dampening: 0.8, # used by SGD with nesterov
+    weight_decay: 0.001
+}}
+
+# *scheduler
+scheduler: {
+  type: CosLR,
+  kwargs: {
+    t_initial: *max_epoch,
+    lr_min: 0.0000001, # the lr will decay until this value
+    warmup_lr_init: 0.000005, # will warmup into the lr set at optimizer
+    warmup_t: 3,
+    warmup_prefix: True, # every new epoch number equals epoch = epoch - warmup_t
+    cycle_limit: 1,
+    t_in_epochs: True,
+}}
+
+# dataset setting
+dataset: {
+  train: { _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/dataset_configs/KITTI360Pair.yaml,
+    others: {subset: 'train'}
+  },
+  val: { _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/dataset_configs/KITTI360Pair.yaml, 
+    others: {subset: 'val'}
+  },
+  test: { _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/dataset_configs/KITTI360Pair.yaml, 
+    others: {subset: 'test'}
+  }
+}
+# model parameters
+model: {
+  NAME: CrossI2P,
+  baseline: False,
+  proxy: False, # if to use point cloud proxy
+  mode: "contrast", # vanilla for metric learning, contrast for contrastive learning
+  global_feat_dim: 256,
+  use_feat_interactor: False, # if have a interactor between different modality
+  do_patch_weight: True, # if to assign attention to token before aggregation
+  discard_cls_token: False, # if to discard before aggregation
+  image_encoder: {
+    _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/model_configs/vit.yaml
+  },
+  pc_encoder: {
+    _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/model_configs/PointTransformer.yaml
+  },
+  aggregator: {
+    image_aggregator: {
+      NAME: NetVLADLoupe, # GeM, NetVLAD, SMD, or none, GeM bug existed
+      _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/model_configs/aggregator/NetVLADLoupe.yaml
+    },
+    pc_aggregator: {
+      NAME: NetVLADLoupe, # GeM, NetVLADLoupe, SMD, or none
+      _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/model_configs/aggregator/NetVLADLoupe_3D.yaml
+    }},
+  # for momentum models
+  momentum: 0.999, # 0.995
+  queue_size: 15000, # 65536
+  loss_type: {
+    NAME: InfoNCE,
+    _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/criterion_configs/InfoNCE.yaml,
+    rkdg: True, # False to block the rkdg loss
+    rkdg_config: {
+      _base_: /workspace/WorkSpacePR/SaliencyI2PLoc/config/criterion_configs/Rkdg.yaml
+    }},
+}

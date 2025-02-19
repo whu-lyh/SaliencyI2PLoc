@@ -1,0 +1,32 @@
+NAME: KITTI360PanoramaPair
+data_path: /public2/KITTI360
+default_sequences: {
+    'train': ["0", "2", "4", "5", "6", "7", "8", "9", "10", "18"],
+    'val': ["0"],
+    'test': ["0"]
+}
+contrast_mode: False # True for concate the query and database data, which is the whole image-point cloud pairs without query or database division
+pre_save: false # save the whole positive and negative samples into pickle file to speed acceleration 
+
+img_subdir: data_2d_pano_512_1024 # or data_2d_pano_384_1024
+submap_subdir: data_3d_submap_raw # or data_3d_submap_raw
+
+image_size: [512, 1024] # raw image size [1440, 2880], [512, 1024] is preprocessing
+proxy_image_size: [224, 224] # point cloud proxy image size, useless in this mode
+img_channel: 3 # only rgb
+point_cluod_fix_num: False # if to load from fixed number of point clouds
+point_cloud_proxy: points # bev_image or range_image or none
+points_num: 20480 #, 10240 # number of points loaded from bin file, note that the raw submap contains much more pts
+point_limit: 30000 # maximum number of point in each bin file
+point_channel: 3 # only xyz
+
+nPos: 1 # number of positives
+nNeg: 1 # 5 number of negatives
+posDistThr: 20 # Euclidean distance
+negDistThr: 40 # Euclidean distance
+
+get_neighbor: False # if to construct neighbor pts at collate_fn
+num_stages: 5
+voxel_size: 0.3
+search_radius: 1.275  # n * voxel_size,n = 2.5/3
+precompute_data: True

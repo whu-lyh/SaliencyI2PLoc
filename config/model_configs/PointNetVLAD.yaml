@@ -1,0 +1,4 @@
+NAME: PointNetVLADEncoder
+global_feat_dim: 256
+num_points: 4096
+num_clusters: 64 # the number of cluster for netvlad layer

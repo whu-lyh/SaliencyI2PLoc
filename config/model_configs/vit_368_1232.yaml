@@ -1,0 +1,18 @@
+NAME: VisionTransformerEncoder
+# vit_tiny_patch16_224
+# vit_small_patch16_224
+# vit_tiny_patch16_384
+# vit_small_patch16_384
+# vit_small_patch14_dinov2
+# vit_base_patch14_dinov2
+# vit_small_patch14_reg4_dinov2
+# vit_base_patch14_reg4_dinov2
+vit_model_name: vit_small_patch16_224 #vit_small_patch16_224 & vit_small_patch14_dinov2
+# patch_embed(vit_small_patch16_224 or vit_small_patch14_dinov2) or patch_embed_any_res or conv_embed or hybird_embed or sphere_conv_embed
+tokenizer_type: patch_embed_any_res
+img_size: [368, 1232] # only if the patch_embed_any_res is assigned!!!
+embed_dim: 384 # tiny=192, small=384, base=768, same as the "embed_dim" in PointFransformer
+class_token: True # if have cls token, the backbone require to keep it true
+pretrained: True
+pretrained_weight_path: "/workspace/WorkSpacePR/SaliencyI2PLoc/pretrained_models/vit_small_patch16_224.bin"
+num_trainable_blocks: 0 # num_trainable_blocks (int): The number of last blocks in the model that are trainable.

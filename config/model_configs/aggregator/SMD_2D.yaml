@@ -1,0 +1,4 @@
+NAME: SMD
+in_dim: 384
+expand_scale_factor: 4 # by default of SMD
+k_scale_factor: 8 # by default of SMD
