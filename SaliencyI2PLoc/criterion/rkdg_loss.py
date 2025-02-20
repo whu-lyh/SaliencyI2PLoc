@@ -286,22 +286,3 @@ class DistilLoss(nn.Module):
         # relational knowledge distillation
         distil_loss += (self.compute_rkdg_loss(logit_stu, logit_tea) * self.rkdgloss_weight)
         return distil_loss
-
-
-if __name__ == '__main__':
-
-    b = 10
-    c = 256
-
-    output_dict_stu = torch.randn(b, c)
-    output_dict_tea = torch.randn(b, c)
-    dis_loss = DistilLoss(c)
-
-    print(dis_loss(output_dict_stu, output_dict_tea))
-
-    print(dis_loss.compute_rkdg_loss(output_dict_stu, output_dict_tea, squared=False, 
-                                      eps=1e-12, distance_weight=1, angle_weight=1))
-
-    print(dis_loss.compute_crosslogitdist_loss(output_dict_stu, output_dict_tea))
-    print(dis_loss.compute_crosslogitsim_loss(output_dict_stu, output_dict_tea))
-    print(dis_loss.compute_crosslogitgeodist_loss(output_dict_stu, output_dict_tea))

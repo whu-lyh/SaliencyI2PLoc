@@ -515,26 +515,3 @@ class PointTransformerEncoder(nn.Module):
    
     def forward(self, x):
         return self.pc_encoder.forward(x)
-    
-
-if __name__ == '__main__':
-    num_points = 4096
-    sim_data = torch.autograd.Variable(torch.rand(2, 1, num_points, 3))
-    sim_data = sim_data.cuda()
-    model_args = dict(
-                    group_size=32,
-                    num_group=4096,
-                    encoder_emb_dim=1024,
-                    embed_dim=384,
-                    depth=2,
-                    drop_path_rate=0.,
-                    num_heads=6,
-                    class_token=True,
-                    num_classes=1000,
-                    global_pool='avg',
-                    fc_norm=True,
-        )
-    ptrans = PointTransformer(**dict(model_args)).cuda()
-    ptrans.train()
-    out3 = ptrans(sim_data)
-    print('ptrans', out3.size())

@@ -175,15 +175,3 @@ class PointNetVLADEncoder(nn.Module):
             embedding: the output features after encoding 
         """
         return self.pc_encoder(x)
-
-
-if __name__ == '__main__':
-    num_points = 4096
-    sim_data = torch.autograd.Variable(torch.rand(4, 1, num_points, 3))
-    sim_data = sim_data.cuda()
-
-    pnv = PointNetVlad_attention(global_feat=True, feature_transform=True, max_pool=False,
-                                    output_dim=256, num_points=num_points).cuda()
-    pnv.train()
-    out3 = pnv(sim_data)
-    print('pnv', out3.size())

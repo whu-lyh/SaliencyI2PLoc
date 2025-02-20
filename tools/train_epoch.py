@@ -115,8 +115,6 @@ def train_epoch(args, config, train_dataset, base_model, optimizer, scaler, epoc
     nBatches = (len(train_dataset.qIdx) + int(config.total_bs) - 1) // int(config.total_bs)
     print_log('Number of total batches: %i' % nBatches, logger=logger)
     print_log('Number of triplets: %i' % (nBatches * config.total_bs), logger=logger)
-    # print_log('Allocated: ' + humanbytes(torch.cuda.memory_allocated()), logger=logger)
-    # print_log('Cached: ' + humanbytes(torch.cuda.memory_reserved()), logger=logger)
     # zero out gradients so we can accumulate new ones over batches
     base_model.zero_grad()
     # forward neural networks, open BN and Droupout module

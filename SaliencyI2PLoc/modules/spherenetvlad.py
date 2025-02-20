@@ -99,16 +99,3 @@ class SphereNetVLADEncoder(nn.Module):
             embedding: the output features after encoding 
         """
         return self.visual_encoder(x)
-
-
-if __name__ == '__main__':
-    import torch
-    sim_data = torch.autograd.Variable(torch.rand(2, 3, 512, 1024))
-    sim_data = sim_data.cuda()
-    # get cnn stem
-    backbone = sphere_resnet18(pretrained=True)
-    # get aggregate stem
-    encoder = SphereNetVlad_attention(backbone, 512, 256, 64).cuda()
-    encoder.train()
-    out3 = encoder(sim_data)
-    print('encoder', out3.size())

@@ -312,28 +312,3 @@ class VisionTransformerEncoder(nn.Module):
         for p in visual_encoder.blocks[:12-num_trainable_blocks].parameters():
             p.requires_grad = False
         return visual_encoder
-
-if __name__ == '__main__':
-    import torch
-    from easydict import EasyDict
-
-    from SaliencyI2PLoc.aggregate_layers import NetVLADLoupe
-    sim_data = torch.autograd.Variable(torch.rand(1, 3, 512, 1024))
-    sim_data = sim_data.cuda()
-    model_args = {
-        'config': {'vit_model_name': 'vit_small_patch16_224',
-                    'tokenizer_type': 'sphere_conv_embed',
-                    'embed_dim': 384,
-                    'pretrained': True,
-                    'pretrained_weight_path': "/workspace/WorkSpacePR/LIP-Loc-unofficical/pretrained_models/vit_small_patch16_224.bin",
-                    'num_trainable_blocks': 12
-                }}
-    encoder = VisionTransformerEncoder.from_config(EasyDict(model_args).config)
-    print(count_parameters(encoder))
-    config = dict(feature_size=384, max_samples=196, 
-                      num_clusters=64, output_dim=256)
-    net_vlad = NetVLADLoupe(config)
-    encoder.train()
-    out = encoder(sim_data)
-    out = net_vlad(out)
-    print('encoder', out.size())

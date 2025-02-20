@@ -221,54 +221,6 @@ class SphereConvEmbed_768(nn.Module):
         x = F.normalize(x, dim=-1)
         return x
 
-
-class ConvEmbed_backup(nn.Module):
-    """ 
-        Image to Patch Embedding with more convolution, inspired from SAIG, the convolution result is same with the PatchEmbed
-    """
-    def __init__(self, img_size: Union[int, Tuple[int, int]] = 224,
-                 patch_size: Union[int, Tuple[int, int]] = 16,
-                 in_chans=3, embed_dim=768, norm_layer=None, flatten=True, bias: bool = True,):
-        super().__init__()
-        img_size = to_2tuple(img_size)
-        patch_size = to_2tuple(patch_size)
-        self.img_size = img_size
-        self.patch_size = patch_size
-        self.grid_size = (img_size[0] // patch_size[0], img_size[1] // patch_size[1])
-        self.num_patches = self.grid_size[0] * self.grid_size[1]
-        self.flatten = flatten
-        self.norm = norm_layer(embed_dim) if norm_layer else nn.Identity()
-        self.conv_stem = nn.Sequential(
-            nn.Conv2d(in_chans, 64, kernel_size=3, stride=2, padding=1),# [224,224,3] -> [112,112,64]
-            nn.BatchNorm2d(64),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1),# [112,112,64] -> [56,56,128]
-            nn.BatchNorm2d(128),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),# [56,56,128] -> [56,56,128]
-            nn.BatchNorm2d(128),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(128, 256, kernel_size=3, stride=2, padding=1),# [56,56,128] -> [28,28,256]
-            nn.BatchNorm2d(256),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),# [28,28,256] -> [28,28,256]
-            nn.BatchNorm2d(256),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(256, 512, kernel_size=3, stride=2, padding=1),# [28,28,256] -> [14,14,512]
-            nn.BatchNorm2d(512),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(512, embed_dim, kernel_size=1, stride=1, padding=0)# [14,14,512] -> [14,14,768]
-        )
-        
-    def forward(self, x):      
-        B, C, H, W = x.shape
-        x = self.conv_stem(x)
-        if self.flatten:
-            x = x.flatten(2).transpose(1, 2)  # BCHW -> BNC
-        x = self.norm(x)
-        return x
-
-
 class MiniEncoder(nn.Module):
     '''
         MiniEncoder for mapping the input image to a fixed feature map, e.g. 224x224
@@ -362,25 +314,3 @@ class HybridEmbed(nn.Module):
             x = x[-1]  # last feature if backbone outputs list/tuple of features
         x = self.proj(x).flatten(2).transpose(1, 2) # NCHW -> NLC
         return x
-
-
-if __name__ == '__main__':
-    '''
-        Unit test of patch embedding
-    '''
-    input_tensor = torch.randn(2, 3, 512, 1024)
-    # emb_layer1 = PatchEmbed(img_size=[512, 1024])
-    # output1 = emb_layer1(input_tensor)
-    # print(output1.size()) # torch.Size([2, 2048, 768])
-    # emb_layer2 = ConvEmbed(img_size=[512, 1024])
-    # output2 = emb_layer2(input_tensor)
-    # print(output2.size()) # torch.Size([2, 196, 768])
-    # emb_layer3 = HybridEmbed(backbone=MiniEncoder())
-    # output3 = emb_layer3(input_tensor)
-    # print(output3.size()) # torch.Size([2, 50176, 768])
-    emb_layer4 = SphereConvEmbed_384(img_size=[512, 1024])
-    output4 = emb_layer4(input_tensor)
-    print(output4.size())
-    emb_layer5 = SphereConvEmbed_768(img_size=[512, 1024])
-    output5 = emb_layer5(input_tensor)
-    print(output5.size())
